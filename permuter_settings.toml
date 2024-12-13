@@ -1,0 +1,8 @@
+compiler_command = "$ASM_PROC $ASM_PROC_FLAGS /home/eltale-librarian/sote/tools/ido_5.3/usr/lib/cc --$AS $ASFLAGS -I. -Iinclude -Iinclude/2.0I/ -Iinclude/2.0I/PR -Isrc -- -c -G 0 -fullwarn -verbose -Xcpluscomm -signed -nostdinc -non_shared -Wab,-r4300_mul -D_LANGUAGE_C -DF3DEX_GBI -DNDEBUG -woff 649,838 -I. -Iinclude -Iinclude/2.0I/ -Iinclude/2.0I/PR -Isrc -mips2 -O2 -g3"
+assembler_command = "mips-linux-gnu-as -EB -mtune=vr4300 -march=vr4300 -mabi=32"
+compiler_type = "ido"
+
+[preserve_macros]
+
+[decompme.compilers]
+"tools/ido_5.3/usr/lib/cc" = "ido_5.3"

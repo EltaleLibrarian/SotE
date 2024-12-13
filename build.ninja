@@ -1,0 +1,27 @@
+ASM_PROC = python3 tools/asm-processor/build.py
+ASM_PROC_FLAGS = --input-enc=utf-8 --output-enc=euc-jp
+ASFLAGS = mips-linux-gnu-as -EB -mtune=vr4300 -march=vr4300 -mabi=32
+rule as
+  command = cpp -I. -Iinclude -Iinclude/2.0I/ -Iinclude/2.0I/PR -Isrc $in -o - | mips-linux-gnu-as -no-pad-sections -EB -mtune=vr4300 -march=vr4300 -mabi=32 -Iinclude -o $out
+  description = as $in
+rule cc
+  command = $ASM_PROC $ASM_PROC_FLAGS /home/eltale-librarian/sote/tools/ido_5.3/usr/lib/cc --$AS $ASFLAGS -I. -Iinclude -Iinclude/2.0I/ -Iinclude/2.0I/PR -Isrc -- -c -G 0 -fullwarn -verbose -Xcpluscomm -signed -nostdinc -non_shared -Wab,-r4300_mul -D_LANGUAGE_C -DF3DEX_GBI -DNDEBUG -woff 649,838 -I. -Iinclude -Iinclude/2.0I/ -Iinclude/2.0I/PR -Isrc -mips2 -O2 -g3 -o $out $in
+  description = cc $in
+rule ld
+  command = mips-linux-gnu-ld -T shadowoftheempire.ld -T undefined_syms_auto.txt -T undefined_syms.txt -Map $mapfile --no-check-sections -o $out
+  description = link $out
+rule sha1sum
+  command = sha1sum -c $in && touch $out
+  description = sha1sum $in
+rule elf
+  command = mips-linux-gnu-objcopy $in $out -O binary
+  description = elf $out
+build build/asm/data/header.o: as asm/data/header.s
+build build/asm/data/boot.o: as asm/data/boot.s
+build build/asm/1000.o: as asm/1000.s
+build build/src/1050.o: cc src/1050.c
+build build/asm/data/1E80.o: as asm/data/1E80.s
+build build/shadowoftheempire.elf: ld shadowoftheempire.ld | build/asm/1000.o build/asm/data/header.o build/src/1050.o build/asm/data/boot.o build/asm/data/1E80.o
+  mapfile = build/shadowoftheempire.map
+build build/shadowoftheempire: elf build/shadowoftheempire.elf
+build build/shadowoftheempire.ok: sha1sum checksum.sha1 | build/shadowoftheempire

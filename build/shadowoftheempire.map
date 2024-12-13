@@ -1,0 +1,200 @@
+
+Discarded input sections
+
+ .text          0x00000000        0x0 build/asm/data/header.o
+ .bss           0x00000000        0x0 build/asm/data/header.o
+ .reginfo       0x00000000       0x18 build/asm/data/header.o
+ .MIPS.abiflags
+                0x00000000       0x18 build/asm/data/header.o
+ .pdr           0x00000000        0x0 build/asm/data/header.o
+ .gnu.attributes
+                0x00000000       0x10 build/asm/data/header.o
+ .text          0x00000000        0x0 build/asm/data/boot.o
+ .bss           0x00000000        0x0 build/asm/data/boot.o
+ .reginfo       0x00000000       0x18 build/asm/data/boot.o
+ .MIPS.abiflags
+                0x00000000       0x18 build/asm/data/boot.o
+ .pdr           0x00000000        0x0 build/asm/data/boot.o
+ .gnu.attributes
+                0x00000000       0x10 build/asm/data/boot.o
+ .reginfo       0x00000000       0x18 build/asm/1000.o
+ .MIPS.abiflags
+                0x00000000       0x18 build/asm/1000.o
+ .pdr           0x00000000        0x0 build/asm/1000.o
+ .gnu.attributes
+                0x00000000       0x10 build/asm/1000.o
+ .options       0x00000000       0x20 build/src/1050.o
+ .reginfo       0x00000000       0x18 build/src/1050.o
+ .mdebug        0x00000000     0xed30 build/src/1050.o
+ .text          0x00000000        0x0 build/asm/data/1E80.o
+ .bss           0x00000000        0x0 build/asm/data/1E80.o
+ .reginfo       0x00000000       0x18 build/asm/data/1E80.o
+ .MIPS.abiflags
+                0x00000000       0x18 build/asm/data/1E80.o
+ .pdr           0x00000000        0x0 build/asm/data/1E80.o
+ .gnu.attributes
+                0x00000000       0x10 build/asm/data/1E80.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/asm/data/header.o
+LOAD build/asm/data/boot.o
+LOAD build/asm/1000.o
+LOAD build/src/1050.o
+LOAD build/asm/data/1E80.o
+                0x00c00000                        __romPos = 0x0
+                0x00000000                        header_ROM_START = __romPos
+                0x00000000                        header_VRAM = ADDR (.header)
+
+.header         0x00000000       0x40
+ FILL mask 0x00000000
+                0x00000000                        header_DATA_START = .
+ build/asm/data/header.o(.data)
+ .data          0x00000000       0x40 build/asm/data/header.o
+                0x00000040                        header_DATA_END = .
+                0x00000040                        header_DATA_SIZE = ABSOLUTE ((header_DATA_END - header_DATA_START))
+                0x00c00000                        __romPos = (__romPos + SIZEOF (.header))
+                0x00000040                        header_ROM_END = __romPos
+                0x00000040                        header_VRAM_END = .
+                0x00000040                        boot_ROM_START = __romPos
+                0x00000040                        boot_VRAM = ADDR (.boot)
+
+.boot           0x00000040      0xfc0
+ FILL mask 0x00000000
+                0x00000040                        boot_DATA_START = .
+ build/asm/data/boot.o(.data)
+ .data          0x00000040      0xfc0 build/asm/data/boot.o
+                0x00001000                        boot_DATA_END = .
+                0x00000fc0                        boot_DATA_SIZE = ABSOLUTE ((boot_DATA_END - boot_DATA_START))
+                0x00c00000                        __romPos = (__romPos + SIZEOF (.boot))
+                0x00001000                        boot_ROM_END = __romPos
+                0x00001000                        boot_VRAM_END = .
+                0x00001000                        entry_ROM_START = __romPos
+                0x80000400                        entry_VRAM = ADDR (.entry)
+
+.entry          0x80000400       0x50 load address 0x00001000
+ FILL mask 0x00000000
+                0x80000400                        entry_TEXT_START = .
+ build/asm/1000.o(.text)
+ .text          0x80000400       0x50 build/asm/1000.o
+                0x80000400                func_80000400
+                0x80000450                        . = ALIGN (., 0x10)
+                0x80000450                        entry_TEXT_END = .
+                0x00000050                        entry_TEXT_SIZE = ABSOLUTE ((entry_TEXT_END - entry_TEXT_START))
+                0x80000450                        entry_DATA_START = .
+ build/asm/1000.o(.data)
+ .data          0x80000450        0x0 build/asm/1000.o
+                0x80000450                        . = ALIGN (., 0x10)
+                0x80000450                        entry_DATA_END = .
+                0x00000000                        entry_DATA_SIZE = ABSOLUTE ((entry_DATA_END - entry_DATA_START))
+                0x80000450                        entry_RODATA_START = .
+ build/asm/1000.o(.rodata)
+                0x80000450                        . = ALIGN (., 0x10)
+                0x80000450                        entry_RODATA_END = .
+                0x00000000                        entry_RODATA_SIZE = ABSOLUTE ((entry_RODATA_END - entry_RODATA_START))
+                0x80000450                        entry_bss_VRAM = ADDR (.entry_bss)
+
+.entry_bss      0x80000450        0x0 load address 0x00001050
+ FILL mask 0x00000000
+                0x80000450                        entry_BSS_START = .
+ build/asm/1000.o(.bss)
+ .bss           0x80000450        0x0 build/asm/1000.o
+                0x80000450                        . = ALIGN (., 0x10)
+                0x80000450                        entry_BSS_END = .
+                0x00000000                        entry_BSS_SIZE = ABSOLUTE ((entry_BSS_END - entry_BSS_START))
+                0x00c00000                        __romPos = (__romPos + SIZEOF (.entry))
+                0x00c00000                        __romPos = ALIGN (__romPos, 0x10)
+                0x80000450                        . = ALIGN (., 0x10)
+                0x00001050                        entry_ROM_END = __romPos
+                0x80000450                        entry_VRAM_END = .
+                0x00001050                        main_ROM_START = __romPos
+                0x80000450                        main_VRAM = ADDR (.main)
+
+.main           0x80000450      0xe30 load address 0x00001050
+ FILL mask 0x00000000
+                0x80000450                        main_TEXT_START = .
+ build/src/1050.o(.text)
+ .text          0x80000450      0xe30 build/src/1050.o
+                0x80000450                func_80000450
+                0x80000470                func_80000470
+                0x80000648                func_80000648
+                0x8000085c                func_8000085C
+                0x80000c3c                func_80000C3C
+                0x80000db8                func_80000DB8
+                0x800010d8                func_800010D8
+                0x80001280                        . = ALIGN (., 0x10)
+                0x80001280                        main_TEXT_END = .
+                0x00000e30                        main_TEXT_SIZE = ABSOLUTE ((main_TEXT_END - main_TEXT_START))
+                0x80001280                        main_DATA_START = .
+ build/src/1050.o(.data)
+                0x80001280                        . = ALIGN (., 0x10)
+                0x80001280                        main_DATA_END = .
+                0x00000000                        main_DATA_SIZE = ABSOLUTE ((main_DATA_END - main_DATA_START))
+                0x80001280                        main_RODATA_START = .
+ build/src/1050.o(.rodata)
+                0x80001280                        . = ALIGN (., 0x10)
+                0x80001280                        main_RODATA_END = .
+                0x00000000                        main_RODATA_SIZE = ABSOLUTE ((main_RODATA_END - main_RODATA_START))
+                0x80001280                        main_bss_VRAM = ADDR (.main_bss)
+
+.main_bss       0x80001280        0x0
+ FILL mask 0x00000000
+                0x80001280                        main_BSS_START = .
+ build/src/1050.o(.bss)
+                0x80001280                        . = ALIGN (., 0x10)
+                0x80001280                        main_BSS_END = .
+                0x00000000                        main_BSS_SIZE = ABSOLUTE ((main_BSS_END - main_BSS_START))
+                0x00c00000                        __romPos = (__romPos + SIZEOF (.main))
+                0x00c00000                        __romPos = ALIGN (__romPos, 0x10)
+                0x80001280                        . = ALIGN (., 0x10)
+                0x00001e80                        main_ROM_END = __romPos
+                0x80001280                        main_VRAM_END = .
+                0x00001e80                        _1E80_ROM_START = __romPos
+                0x80001280                        _1E80_VRAM = ADDR (._1E80)
+
+._1E80          0x80001280   0xbfe180 load address 0x00001e80
+ FILL mask 0x00000000
+                0x80001280                        _1E80_DATA_START = .
+ build/asm/data/1E80.o(.data)
+ .data          0x80001280   0xbfe180 build/asm/data/1E80.o
+                0x80bff400                        _1E80_DATA_END = .
+                0x00bfe180                        _1E80_DATA_SIZE = ABSOLUTE ((_1E80_DATA_END - _1E80_DATA_START))
+                0x00c00000                        __romPos = (__romPos + SIZEOF (._1E80))
+                0x00c00000                        _1E80_ROM_END = __romPos
+                0x80bff400                        _1E80_VRAM_END = .
+
+/DISCARD/
+ *(*)
+                0x80000000                        D_80000000 = 0x80000000
+                0x80000004                        D_80000004 = 0x80000004
+                0x800010d8                        D_800010D8 = 0x800010d8
+                0x80001280                        D_80001280 = 0x80001280
+                0x80001bd4                        D_80001BD4 = 0x80001bd4
+                0x80001bd8                        D_80001BD8 = 0x80001bd8
+                0x80001be0                        D_80001BE0 = 0x80001be0
+                0x80001be4                        D_80001BE4 = 0x80001be4
+                0x80001bf0                        D_80001BF0 = 0x80001bf0
+                0x80001bf4                        D_80001BF4 = 0x80001bf4
+                0x80001bf8                        D_80001BF8 = 0x80001bf8
+                0x80001bfc                        D_80001BFC = 0x80001bfc
+                0x80001c00                        D_80001C00 = 0x80001c00
+                0x80001c04                        D_80001C04 = 0x80001c04
+                0x80001c08                        D_80001C08 = 0x80001c08
+                0x80001c0c                        D_80001C0C = 0x80001c0c
+                0x80001c10                        D_80001C10 = 0x80001c10
+                0x80001d10                        D_80001D10 = 0x80001d10
+                0x80001e10                        D_80001E10 = 0x80001e10
+                0x801126b0                        D_801126B0 = 0x801126b0
+                0x80300000                        D_80300000 = 0x80300000
+                0x80300004                        D_80300004 = 0x80300004
+                0x80300010                        D_80300010 = 0x80300010
+                0xa440000c                        D_A440000C = 0xa440000c
+                0xa4400010                        D_A4400010 = 0xa4400010
+                0xa4400024                        D_A4400024 = 0xa4400024
+                0x800171f0                        func_800171F0 = 0x800171f0
+OUTPUT(build/shadowoftheempire.elf elf32-tradbigmips)
