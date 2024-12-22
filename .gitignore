@@ -1,0 +1,13 @@
+baserom.us.z64
+asm/
+assets/
+build/
+expected/
+nonmatchings/
+.vscode/
+ctx.c
+.ninja_log
+.splache
+build.ninja
+permuter_settings.toml
+undefined_syms_auto.txt
