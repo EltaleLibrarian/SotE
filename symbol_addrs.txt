@@ -1,0 +1,5 @@
+rebalanceHuffmanTree = 0x8000085C;
+updateHuffmanTree = 0x80000C3C;
+nodeFrequencies = 0x80001C04;
+parentNodes = 0x80001C08;
+childNodes = 0x80001C0C;

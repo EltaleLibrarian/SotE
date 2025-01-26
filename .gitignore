@@ -4,10 +4,14 @@ assets/
 build/
 expected/
 nonmatchings/
-.vscode/
+#.vscode/
 ctx.c
 .ninja_log
 .splache
 build.ninja
 permuter_settings.toml
 undefined_syms_auto.txt
+shadowoftheempire.d
+shadowoftheempire.ld
+undefined_funcs_auto.txt
+__pycache__/

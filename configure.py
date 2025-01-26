@@ -29,8 +29,12 @@ GAME_CC_DIR = f"$ASM_PROC $ASM_PROC_FLAGS {TOOLS_DIR}/ido_5.3/usr/lib/cc --$AS $
 LIB_CC_DIR = f"$ASM_PROC $ASM_PROC_FLAGS {TOOLS_DIR}/ido_5.3/usr/lib/cc --$AS $ASFLAGS"
 WARNINGS = "-fullwarn -verbose -Xcpluscomm -signed -nostdinc -non_shared -Wab,-r4300_mul -D_LANGUAGE_C -DF3DEX_GBI -DNDEBUG -woff 649,838"
 
-GAME_COMPILE_CMD = (
+GAME_COMPILE_G3_CMD = (
     f"{GAME_CC_DIR} {COMMON_INCLUDES} -- -c -G 0 {WARNINGS} {COMMON_INCLUDES} -mips2 -O2 -g3"
+)
+
+GAME_COMPILE_CMD = (
+    f"{GAME_CC_DIR} {COMMON_INCLUDES} -- -c -G 0 {WARNINGS} {COMMON_INCLUDES} -mips2 -O2 -g0"
 )
 
 
@@ -51,7 +55,7 @@ def clean():
 def write_permuter_settings():
     with open("permuter_settings.toml", "w") as f:
         f.write(
-	    f"""compiler_command = "{GAME_COMPILE_CMD}"
+	    f"""compiler_command = "{GAME_COMPILE_G3_CMD}"
 assembler_command = "mips-linux-gnu-as -EB -mtune=vr4300 -march=vr4300 -mabi=32"
 compiler_type = "ido"
 
@@ -109,10 +113,18 @@ def build_stuff(linker_entries: List[LinkerEntry]):
     )
 
     ninja.rule(
+        "cc_g3",
+        description="cc_g3 $in",
+        command=f"{GAME_COMPILE_G3_CMD} -o $out $in",
+    )
+
+    ninja.rule(
         "cc",
         description="cc $in",
         command=f"{GAME_COMPILE_CMD} -o $out $in",
     )
+
+    
 
     ninja.rule(
         "ld",
@@ -145,8 +157,10 @@ def build_stuff(linker_entries: List[LinkerEntry]):
         elif isinstance(seg, splat.segtypes.common.c.CommonSegC):
             if any(str(src_path).startswith("src/lib/") for src_path in entry.src_paths):
                 build(entry.object_path, entry.src_paths, "libcc")
-            else:
+            elif any(str(src_path) == "src/1050.c" for src_path in entry.src_paths):
                 build(entry.object_path, entry.src_paths, "cc")
+            else:
+                build(entry.object_path, entry.src_paths, "cc_g3")
         elif isinstance(seg, splat.segtypes.common.databin.CommonSegDatabin):
             build(entry.object_path, entry.src_paths, "as")
         else:
