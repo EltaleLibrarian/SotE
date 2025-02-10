@@ -1,0 +1,20 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "SotE",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/include/2.0I/PR",
+                "${workspaceFolder}/include/2.0I",
+                "${workspaceFolder}/src"
+            ],
+            "defines": [
+                "_LANGUAGE_C",
+                "VER_US"
+            ],
+            "cStandard": "gnu89",
+            "cppStandard": "c++17"
+        }
+    ]
+}
